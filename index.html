@@ -9,29 +9,37 @@
       font-family: Arial, sans-serif;
       text-align: center;
       margin-top: 50px;
-      background-color: #f7f7f7;
+      background-color: #f0f8ff;
     }
+
     h1 {
       color: #333;
+      margin-bottom: 30px;
     }
+
     .rating-btn {
-      padding: 10px 15px;
+      padding: 15px 20px;
       margin: 5px;
-      font-size: 18px;
-      border-radius: 8px;
+      font-size: 20px;
+      border-radius: 12px;
       border: none;
       cursor: pointer;
       background-color: #4CAF50;
       color: white;
-      transition: background-color 0.2s;
+      transition: all 0.3s ease;
     }
+
     .rating-btn:hover {
-      background-color: #45a049;
+      transform: scale(1.2);
+      background-color: #2e7d32;
     }
+
     #message {
-      margin-top: 20px;
+      margin-top: 25px;
       font-weight: bold;
+      font-size: 24px;
       color: #333;
+      transition: all 0.3s ease;
     }
   </style>
 </head>
@@ -44,7 +52,6 @@
     const buttonsContainer = document.getElementById('buttons');
     const message = document.getElementById('message');
 
-    // יוצרים את כפתורי הדירוג
     for (let i = 1; i <= 10; i++) {
       const btn = document.createElement('button');
       btn.textContent = i;
@@ -53,11 +60,17 @@
       buttonsContainer.appendChild(btn);
     }
 
-    // פונקציה שמופעלת בלחיצה
     function sendRating(rating) {
-      // מציג הודעת תודה במקום לשלוח לשרת
-      message.textContent = `תודה! דירגת ${rating}/10 ✅`;
-      message.style.color = 'green';
+      // צבע לפי דירוג
+      if (rating <= 3) message.style.color = 'red';
+      else if (rating <= 6) message.style.color = 'orange';
+      else if (rating <= 8) message.style.color = 'yellowgreen';
+      else message.style.color = 'green';
+
+      // טקסט ותזוזה
+      message.textContent = `תודה! נתת דירוג ${rating} ✅`;
+      message.style.fontSize = "28px";
+      setTimeout(() => { message.style.fontSize = "24px"; }, 200);
     }
   </script>
 </body>
