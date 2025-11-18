@@ -85,11 +85,26 @@
   }
 
   .credit {
-    margin-top: 25px;
+    margin-top: 15px;
     opacity: 0.5;
     font-size: 0.9rem;
   }
 
+  .reset-btn {
+    margin-top: 15px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #6a5acd;
+    color: white;
+    transition: 0.3s;
+  }
+
+  .reset-btn:hover {
+    background: #5949bc;
+  }
 </style>
 </head>
 <body>
@@ -112,6 +127,8 @@
 </div>
 
 <script>
+  const initialHTML = document.getElementById("voteBox").innerHTML;
+
   function pickRating(num) {
     let color, imgSrc;
 
@@ -135,8 +152,13 @@
         <br>
         <img src="${imgSrc}" alt="תמונה לפי הציון">
       </div>
+      <button class="reset-btn" onclick="resetVote()">הצביעו מחדש</button>
       <p class="credit">נוצר על ידי יובל</p>
     `;
+  }
+
+  function resetVote() {
+    document.getElementById("voteBox").innerHTML = initialHTML;
   }
 </script>
 
