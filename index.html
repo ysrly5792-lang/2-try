@@ -1,136 +1,105 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>דירוג מצגת עם צבעים</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #ffffff, #f0f0ff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .container {
-    background: white;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 320px;
-    text-align: center;
-  }
-  .rating button {
-    width: 40px;
-    height: 40px;
-    margin: 5px;
-    border: none;
-    border-radius: 50%;
-    background: #eee;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  .rating button:hover {
-    background: #dcdcdc;
-  }
-  .submit-btn {
-    padding: 10px;
-    margin-top: 15px;
-    background: #6a5acd;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    transition: 0.3s;
-  }
-  .submit-btn:hover {
-    background: #5949bc;
-  }
-  .message {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 20px;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .message.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .selected-number {
-    font-size: 50px;
-    font-weight: bold;
-    margin-top: 15px;
-    animation: pop 0.3s ease;
-  }
-  @keyframes pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.4); }
-    100% { transform: scale(1); }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>דירוג מצגת</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      padding: 50px;
+      direction: rtl;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .rating {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .rating button {
+      width: 60px;
+      height: 60px;
+      font-size: 20px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s, color 0.3s;
+    }
+
+    .rating button:hover {
+      transform: scale(1.1);
+    }
+
+    .selected-result {
+      font-size: 3rem;
+      font-weight: bold;
+      animation: pop-in 0.6s ease;
+      margin-top: 40px;
+      color: #333;
+    }
+
+    @keyframes pop-in {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .credit {
+      margin-top: 40px;
+      opacity: 0.4;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>דירוג מצגת</h1>
-  <p>בחרו ציון מ-1 עד 10:</p>
-  
-  <div class="rating" id="ratingBoard">
-    <script>
-      for (let i = 1; i <= 10; i++) {
-        document.write(`<button onclick="selectRating(${i})">${i}</button>`);
-      }
-    </script>
+  <h1>דרג את המצגת</h1>
+
+  <div id="ratingContainer" class="rating">
+    <button onclick="pickRating(1)">1</button>
+    <button onclick="pickRating(2)">2</button>
+    <button onclick="pickRating(3)">3</button>
+    <button onclick="pickRating(4)">4</button>
+    <button onclick="pickRating(5)">5</button>
+    <button onclick="pickRating(6)">6</button>
+    <button onclick="pickRating(7)">7</button>
+    <button onclick="pickRating(8)">8</button>
+    <button onclick="pickRating(9)">9</button>
+    <button onclick="pickRating(10)">10</button>
   </div>
 
-  <button class="submit-btn" onclick="submitRating()">אישור</button>
+  <div id="result"></div>
 
-  <div class="message" id="message"></div>
-</div>
+  <div class="credit">נוצר על ידי יובל</div>
 
-<script>
-  let selectedRating = null;
-  let submitted = false;
+  <script>
+    function pickRating(num) {
+      // צבעים לפי דירוג
+      let color;
+      if (num <= 3) color = "#ff4d4d";          // אדום
+      else if (num <= 6) color = "#ffcc00";     // כתום-צהוב
+      else if (num <= 9) color = "#008000";     // ירוק כהה
+      else color = "#6aff6a";                   // ירוק בהיר
 
-  function getColor(value) {
-    if(value <= 3) return '#e74c3c'; // אדום
-    if(value <= 6) return '#f39c12'; // כתום/צהוב
-    if(value <= 9) return '#27ae60'; // ירוק כהה
-    return '#2ecc71'; // ירוק בהיר
-  }
+      // הסתרת כפתורים
+      document.getElementById("ratingContainer").style.display = "none";
 
-  function selectRating(value) {
-    if(submitted) return;
-    selectedRating = value;
-    const buttons = document.querySelectorAll('.rating button');
-    buttons.forEach(btn => btn.style.background = '#eee'); // איפוס צבעים
-    buttons[value-1].style.background = getColor(value);
-    buttons[value-1].style.color = 'white';
-    buttons[value-1].style.fontWeight = 'bold';
-  }
-
-  function submitRating() {
-    if(submitted) return;
-    if(selectedRating !== null) {
-      submitted = true;
-      document.getElementById('ratingBoard').style.display = 'none';
-      document.querySelector('.submit-btn').style.display = 'none';
-      
-      const message = document.getElementById('message');
-      message.innerHTML = `<div class="selected-number" style="color:${getColor(selectedRating)}">${selectedRating}</div>תודה! הצבעת ${selectedRating}!`;
-      message.classList.add('show');
-    } else {
-      alert("אנא בחרו ציון לפני האישור.");
+      // הצגת תוצאה
+      document.getElementById("result").innerHTML =
+        `<div class="selected-result" style="color: ${color}">
+          תודה! הצבעת ${num}!
+        </div>`;
     }
-  }
-</script>
+  </script>
 
 </body>
 </html>
