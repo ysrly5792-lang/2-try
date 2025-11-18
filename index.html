@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>דירוג מצגת</title>
+<title>דירוג מצגת עם צבעים</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -19,7 +19,7 @@
     padding: 25px;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 300px;
+    width: 320px;
     text-align: center;
   }
   .rating button {
@@ -55,7 +55,6 @@
     font-size: 24px;
     font-weight: bold;
     margin-top: 20px;
-    color: #6a5acd;
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -67,7 +66,6 @@
   .selected-number {
     font-size: 50px;
     font-weight: bold;
-    color: #6a5acd;
     margin-top: 15px;
     animation: pop 0.3s ease;
   }
@@ -101,12 +99,19 @@
   let selectedRating = null;
   let submitted = false;
 
+  function getColor(value) {
+    if(value <= 3) return '#e74c3c'; // אדום
+    if(value <= 6) return '#f39c12'; // כתום/צהוב
+    if(value <= 9) return '#27ae60'; // ירוק כהה
+    return '#2ecc71'; // ירוק בהיר
+  }
+
   function selectRating(value) {
     if(submitted) return;
     selectedRating = value;
     const buttons = document.querySelectorAll('.rating button');
     buttons.forEach(btn => btn.style.background = '#eee'); // איפוס צבעים
-    buttons[value-1].style.background = '#6a5acd';
+    buttons[value-1].style.background = getColor(value);
     buttons[value-1].style.color = 'white';
     buttons[value-1].style.fontWeight = 'bold';
   }
@@ -115,13 +120,11 @@
     if(submitted) return;
     if(selectedRating !== null) {
       submitted = true;
-      // הסתרת לוח הבחירה והכפתור
       document.getElementById('ratingBoard').style.display = 'none';
       document.querySelector('.submit-btn').style.display = 'none';
       
-      // הצגת המספר שנבחר עם ההודעה
       const message = document.getElementById('message');
-      message.innerHTML = `<div class="selected-number">${selectedRating}</div>תודה! הצבעת ${selectedRating}!`;
+      message.innerHTML = `<div class="selected-number" style="color:${getColor(selectedRating)}">${selectedRating}</div>תודה! הצבעת ${selectedRating}!`;
       message.classList.add('show');
     } else {
       alert("אנא בחרו ציון לפני האישור.");
